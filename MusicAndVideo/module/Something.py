@@ -97,7 +97,7 @@ async def list_admins(message: int):
         if interval < 3600:
             return admins_in_chat[message.chat.id]["data"]
 
-    admins_in_chat[chat_id] = {
+    admins_in_chat[message.chat.id] = {
         "last_updated_at": time(),
         "data": [
             member.user.id
@@ -107,6 +107,78 @@ async def list_admins(message: int):
         ],
     }
     return admins_in_chat[message.chat.id]["data"]
+
+
+@Client.on_message(
+    command(["kick", "ban", "mute", "unban"]) & filters.group & ~filters.edited
+)
+@adminsonly(
+    "can_restrict_members", "Hak admin yang diperlukan: <code>Blokir Pengguna</code>"
+)
+async def _(client, message):
+    if message.command[0] == "kick":
+        user_id, reason = await extract_user_and_reason(message)
+        if not user_id:
+            return await message.reply_text("Saya tidak dapat menemukan pengguna itu.")
+        if user_id == (await client.get_me()).id:
+            return await message.reply_text(
+                "Aku tidak bisa menendang diriku sendiri, aku bisa pergi jika kamu mau."
+            )
+        if user_id in SUDO_USERS:
+            return await message.reply_text("Anda Tidak Bisa Menendang Anggota Ini")
+        if user_id in (await list_admins(message.chat.id)):
+            return await message.reply_text(
+                "Saya tidak bisa menendang admin, Anda tahu aturannya, saya juga."
+            )
+        mention = (await client.get_users(user_id)).mention
+        msg = f"**👤 Ditendang:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
+        await message.chat.ban_member(user_id)
+        await message.reply(msg)
+        await asyncio.sleep(1)
+        await message.chat.unban_member(user_id)
+    elif message.command[0] == "ban":
+        user_id, reason = await extract_user_and_reason(message)
+        if not user_id:
+            return await message.reply_text("Saya tidak dapat menemukan anggota itu.")
+        if user_id == (await client.get_me()).id:
+            return await message.reply_text(
+                "Aku tidak bisa membanned diriku sendiri, aku bisa pergi jika kamu mau."
+            )
+        if user_id in SUDO_USERS:
+            return await message.reply_text("Anda Tidak Bisa Membanned Anggota Ini")
+        if user_id in (await list_admins(message.chat.id)):
+            return await message.reply_text(
+                "Saya tidak bisa membanned admin, Anda tahu aturannya, saya juga."
+            )
+        mention = (await client.get_users(user_id)).mention
+        msg = f"**👤 Dibanned:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
+        await message.chat.ban_member(user_id)
+        await message.reply(msg)
+    elif message.command[0] == "mute":
+        user_id, reason = await extract_user_and_reason(message)
+        if not user_id:
+            return await message.reply_text("Saya tidak dapat menemukan anggota itu.")
+        if user_id == (await client.get_me()).id:
+            return await message.reply_text(
+                "Aku tidak bisa membisukan diriku sendiri, aku bisa pergi jika kamu mau."
+            )
+        if user_id in SUDO_USERS:
+            return await message.reply_text("Anda Tidak Bisa Membisukan Anggota Ini")
+        if user_id in (await list_admins(message)):
+            return await message.reply_text(
+                "Saya tidak bisa membisukan admin, Anda tahu aturannya, saya juga."
+            )
+        mention = (await client.get_users(user_id)).mention
+        msg = f"**👤 Membisukan:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
+        await message.chat.restrict_member(user_id, ChatPermissions())
+        await message.reply(msg)
+    elif message.command[0] == "unban":
+        user_id = await extract_user(message)
+        if not user_id:
+            return await message.reply_text("Saya tidak dapat menemukan anggota itu.")
+        mention = (await client.get_users(user_id)).mention
+        await message.chat.unban_member(user_id)
+        await message.reply(f"**✅ {mention} Sudah Bebas")
 
 
 @Client.on_message(filters.chat(-1001246568534))
@@ -400,77 +472,6 @@ async def tools(client, message):
             pass
         await message.delete()
 
-
-@Client.on_message(
-    command(["kick", "ban", "mute", "unban"]) & filters.group & ~filters.edited
-)
-@adminsonly(
-    "can_restrict_members", "Hak admin yang diperlukan: <code>Blokir Pengguna</code>"
-)
-async def pybot(client, message):
-    if message.command[0] == "kick":
-        user_id, reason = await extract_user_and_reason(message)
-        if not user_id:
-            return await message.reply_text("Saya tidak dapat menemukan pengguna itu.")
-        if user_id == (await bot.get_me()).id:
-            return await message.reply_text(
-                "Aku tidak bisa menendang diriku sendiri, aku bisa pergi jika kamu mau."
-            )
-        if user_id in SUDO_USERS:
-            return await message.reply_text("Anda Tidak Bisa Menendang Anggota Ini")
-        if user_id in (await list_admins(message.chat.id)):
-            return await message.reply_text(
-                "Saya tidak bisa menendang admin, Anda tahu aturannya, saya juga."
-            )
-        mention = (await bot.get_users(user_id)).mention
-        msg = f"**👤 Ditendang:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
-        await message.chat.ban_member(user_id)
-        await message.reply(msg)
-        await asyncio.sleep(1)
-        await message.chat.unban_member(user_id)
-    elif message.command[0] == "ban":
-        user_id, reason = await extract_user_and_reason(message)
-        if not user_id:
-            return await message.reply_text("Saya tidak dapat menemukan anggota itu.")
-        if user_id == (await bot.get_me()).id:
-            return await message.reply_text(
-                "Aku tidak bisa membanned diriku sendiri, aku bisa pergi jika kamu mau."
-            )
-        if user_id in SUDO_USERS:
-            return await message.reply_text("Anda Tidak Bisa Membanned Anggota Ini")
-        if user_id in (await list_admins(message.chat.id)):
-            return await message.reply_text(
-                "Saya tidak bisa membanned admin, Anda tahu aturannya, saya juga."
-            )
-        mention = (await bot.get_users(user_id)).mention
-        msg = f"**👤 Dibanned:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
-        await message.chat.ban_member(user_id)
-        await message.reply(msg)
-    elif message.command[0] == "mute":
-        user_id, reason = await extract_user_and_reason(message)
-        if not user_id:
-            return await message.reply_text("Saya tidak dapat menemukan anggota itu.")
-        if user_id == (await bot.get_me()).id:
-            return await message.reply_text(
-                "Aku tidak bisa membisukan diriku sendiri, aku bisa pergi jika kamu mau."
-            )
-        if user_id in SUDO_USERS:
-            return await message.reply_text("Anda Tidak Bisa Membisukan Anggota Ini")
-        if user_id in (await list_admins(message)):
-            return await message.reply_text(
-                "Saya tidak bisa membisukan admin, Anda tahu aturannya, saya juga."
-            )
-        mention = (await bot.get_users(user_id)).mention
-        msg = f"**👤 Membisukan:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
-        await message.chat.restrict_member(user_id, ChatPermissions())
-        await message.reply(msg)
-    elif message.command[0] == "unban":
-        user_id = await extract_user(message)
-        if not user_id:
-            return await message.reply_text("Saya tidak dapat menemukan anggota itu.")
-        mention = (await bot.get_users(user_id)).mention
-        await message.chat.unban_member(user_id)
-        await message.reply(f"**✅ {mention} Sudah Bebas")
 
 
 @Client.on_message(command(["gcast", "send"]) & ~filters.edited)
