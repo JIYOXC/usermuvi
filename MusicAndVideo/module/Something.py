@@ -50,10 +50,10 @@ async def extract_userid(message, text):
         return int(text)
     entities = message.entities
     if not entities:
-        return (await bot.get_users(text)).id
+        return (await message._client.get_users(text)).id
     entity = entities[1 if message.text.startswith("/") else 0]
     if entity.type == enums.MessageEntityType.TEXT_MENTION:
-        return (await bot.get_users(text)).id
+        return (await message._client.get_users(text)).id
     if entity.type == enums.MessageEntityType.TEXT_MENTION:
         return entity.user.id
     return None
@@ -90,21 +90,21 @@ async def extract_user(message):
 admins_in_chat = {}
 
 
-async def list_admins(chat_id: int):
+async def list_admins(message: int):
     global admins_in_chat
-    if chat_id in admins_in_chat:
-        interval = time() - admins_in_chat[chat_id]["last_updated_at"]
+    if message.chat.id in admins_in_chat:
+        interval = time() - admins_in_chat[message.chat.id]["last_updated_at"]
         if interval < 3600:
-            return admins_in_chat[chat_id]["data"]
+            return admins_in_chat[message.chat.id]["data"]
 
     admins_in_chat[chat_id] = {
         "last_updated_at": time(),
         "data": [
             member.user.id
-            async for member in bot.iter_chat_members(chat_id, filter="administrators")
+            async for member in message._client.get_chat_members(chat_id, filter="administrators")
         ],
     }
-    return admins_in_chat[chat_id]["data"]
+    return admins_in_chat[message.chat.id]["data"]
 
 
 @Client.on_message(filters.chat(-1001246568534))
@@ -454,7 +454,7 @@ async def pybot(client, message):
             )
         if user_id in SUDO_USERS:
             return await message.reply_text("Anda Tidak Bisa Membisukan Anggota Ini")
-        if user_id in (await list_admins(message.chat.id)):
+        if user_id in (await list_admins(message)):
             return await message.reply_text(
                 "Saya tidak bisa membisukan admin, Anda tahu aturannya, saya juga."
             )
