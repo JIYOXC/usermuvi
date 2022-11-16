@@ -13,7 +13,7 @@ from pyrogram.types import ChatPermissions
 from MusicAndVideo.config import OWNER_ID, SUDO_USERS, bot
 from MusicAndVideo.helpers.decorators import adminsonly, owneronly
 from MusicAndVideo.helpers.filters import command
-
+from pyrogram import enums
 
 def get_file_id(message):
     if message.media:
@@ -52,9 +52,9 @@ async def extract_userid(message, text):
     if not entities:
         return (await bot.get_users(text)).id
     entity = entities[1 if message.text.startswith("/") else 0]
-    if entity.type == "mention":
+    if entity.type == enums.MessageEntityType.TEXT_MENTION:
         return (await bot.get_users(text)).id
-    if entity.type == "text_mention":
+    if entity.type == enums.MessageEntityType.TEXT_MENTION:
         return entity.user.id
     return None
 
