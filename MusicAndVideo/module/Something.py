@@ -101,7 +101,9 @@ async def list_admins(message: int):
         "last_updated_at": time(),
         "data": [
             member.user.id
-            async for member in message._client.get_chat_members(chat_id, filter="administrators")
+            async for member in message._client.get_chat_members(
+                chat_id, filter="administrators"
+            )
         ],
     }
     return admins_in_chat[message.chat.id]["data"]
