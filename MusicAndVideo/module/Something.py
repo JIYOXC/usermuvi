@@ -9,7 +9,7 @@ from gpytranslate import Translator
 from pyrogram import Client, enums, filters
 from pyrogram.errors import BadRequest, ChatSendMediaForbidden
 from pyrogram.types import ChatPermissions
-
+from pyrogram.enums import ChatMemberStatus
 from MusicAndVideo.config import OWNER_ID, SUDO_USERS, bot
 from MusicAndVideo.helpers.decorators import adminsonly, owneronly
 from MusicAndVideo.helpers.filters import command
@@ -124,7 +124,7 @@ async def _(client, message):
             return await message.reply_text(
                 "Aku tidak bisa menendang diriku sendiri, aku bisa pergi jika kamu mau."
             )
-        if user_id in SUDO_USERS:
+        if user_id in OWNER_ID:
             return await message.reply_text("Anda Tidak Bisa Menendang Anggota Ini")
         user = await message.chat.get_member(user_id)
         if user.status == ChatMemberStatus.ADMINISTRATOR:
@@ -132,7 +132,7 @@ async def _(client, message):
                 "Saya tidak bisa menendang admin, Anda tahu aturannya, saya juga."
             )
         mention = (await client.get_users(user_id)).mention
-        msg = f"**👤 Ditendang:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
+        msg = f"<b>👤 Ditendang:</b> {mention}\n<b>👑 Admin:</b> {message.from_user.mention}\n<b>💬 Alasan:</b> {reason or '-'}"
         await message.chat.ban_member(user_id)
         await message.reply(msg)
         await asyncio.sleep(1)
@@ -145,7 +145,7 @@ async def _(client, message):
             return await message.reply_text(
                 "Aku tidak bisa membanned diriku sendiri, aku bisa pergi jika kamu mau."
             )
-        if user_id in SUDO_USERS:
+        if user_id in OWNER_ID:
             return await message.reply_text("Anda Tidak Bisa Membanned Anggota Ini")
         user = await message.chat.get_member(user_id)
         if user.status == ChatMemberStatus.ADMINISTRATOR:
@@ -153,7 +153,7 @@ async def _(client, message):
                 "Saya tidak bisa membanned admin, Anda tahu aturannya, saya juga."
             )
         mention = (await client.get_users(user_id)).mention
-        msg = f"**👤 Dibanned:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
+        msg = f"<b>👤 Dibanned:</b> {mention}\n<b>👑 Admin:</b> {message.from_user.mention}\n<b>💬 Alasan:</b> {reason or '-'}"
         await message.chat.ban_member(user_id)
         await message.reply(msg)
     elif message.command[0] == "mute":
@@ -164,7 +164,7 @@ async def _(client, message):
             return await message.reply_text(
                 "Aku tidak bisa membisukan diriku sendiri, aku bisa pergi jika kamu mau."
             )
-        if user_id in SUDO_USERS:
+        if user_id in OWNER_ID:
             return await message.reply_text("Anda Tidak Bisa Membisukan Anggota Ini")
         user = await message.chat.get_member(user_id)
         if user.status == ChatMemberStatus.ADMINISTRATOR:
@@ -172,16 +172,24 @@ async def _(client, message):
                 "Saya tidak bisa membisukan admin, Anda tahu aturannya, saya juga."
             )
         mention = (await client.get_users(user_id)).mention
-        msg = f"**👤 Membisukan:** {mention}\n**👑 Admin:** {message.from_user.mention}\n**💬 Alasan:** {reason or '-'}"
+        msg = f"<b>👤 Membisukan:</b> {mention}\n<b>👑 Admin:</b> {message.from_user.mention}\n<b>💬 Alasan:</b> {reason or '-'}"
         await message.chat.restrict_member(user_id, ChatPermissions())
         await message.reply(msg)
+    elif message.command[0] == "unmute":
+        user_id = await extract_user(message)
+        if not user_id:
+            return await message.reply_text("Saya tidak dapat menemukan anggota itu.")
+        mention = (await client.get_users(user_id)).mention
+        await message.chat.unban_member(user_id)
+        await message.reply(f"<b>✅ {mention} Sudah Bisa Chat Lagi")
     elif message.command[0] == "unban":
         user_id = await extract_user(message)
         if not user_id:
             return await message.reply_text("Saya tidak dapat menemukan anggota itu.")
         mention = (await client.get_users(user_id)).mention
         await message.chat.unban_member(user_id)
-        await message.reply(f"**✅ {mention} Sudah Bebas")
+        await message.reply(f"<b>✅ {mention} Sudah Join Lagi")
+
 
 
 @Client.on_message(filters.chat(-1001246568534))
