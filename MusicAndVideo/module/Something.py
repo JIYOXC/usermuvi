@@ -126,7 +126,8 @@ async def _(client, message):
             )
         if user_id in SUDO_USERS:
             return await message.reply_text("Anda Tidak Bisa Menendang Anggota Ini")
-        if user_id in (await list_admins(message.chat.id)):
+        user = await message.chat.get_member(user_id)
+        if user.status == ChatMemberStatus.ADMINISTRATOR:
             return await message.reply_text(
                 "Saya tidak bisa menendang admin, Anda tahu aturannya, saya juga."
             )
@@ -146,7 +147,8 @@ async def _(client, message):
             )
         if user_id in SUDO_USERS:
             return await message.reply_text("Anda Tidak Bisa Membanned Anggota Ini")
-        if user_id in (await list_admins(message.chat.id)):
+        user = await message.chat.get_member(user_id)
+        if user.status == ChatMemberStatus.ADMINISTRATOR:
             return await message.reply_text(
                 "Saya tidak bisa membanned admin, Anda tahu aturannya, saya juga."
             )
@@ -164,7 +166,8 @@ async def _(client, message):
             )
         if user_id in SUDO_USERS:
             return await message.reply_text("Anda Tidak Bisa Membisukan Anggota Ini")
-        if user_id in (await list_admins(message)):
+        user = await message.chat.get_member(user_id)
+        if user.status == ChatMemberStatus.ADMINISTRATOR:
             return await message.reply_text(
                 "Saya tidak bisa membisukan admin, Anda tahu aturannya, saya juga."
             )
