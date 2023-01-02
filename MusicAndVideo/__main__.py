@@ -6,7 +6,7 @@ from MusicAndVideo import config
 
 
 async def main():
-    await config.ubot.start()
+    await config.bot.start()
     await config.call_py.start()
     await idle()
 
