@@ -6,7 +6,7 @@ from time import time
 
 import gtts
 from gpytranslate import Translator
-from pyrogram import Client, enums, filters
+from pyrogram import Client, filters
 from pyrogram.errors import BadRequest, ChatSendMediaForbidden
 from pyrogram.types import ChatPermissions
 
