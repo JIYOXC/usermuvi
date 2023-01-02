@@ -52,9 +52,9 @@ async def extract_userid(message, text):
     if not entities:
         return (await message._client.get_users(text)).id
     entity = entities[1 if message.text.startswith("/") else 0]
-    if entity.type == enums.MessageEntityType.TEXT_MENTION:
+    if entity.type == "mention":
         return (await message._client.get_users(text)).id
-    if entity.type == enums.MessageEntityType.TEXT_MENTION:
+    if entity.type == "text_mention":
         return entity.user.id
     return None
 
