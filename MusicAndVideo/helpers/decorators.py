@@ -33,7 +33,6 @@ async def member_permissions(chat_id, user_id):
     return perms
 
 
-
 async def authorised(func, subFunc2, client, message):
     chatID = message.chat.id
     try:
