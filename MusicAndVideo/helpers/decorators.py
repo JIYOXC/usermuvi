@@ -6,15 +6,32 @@ from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 from MusicAndVideo.config import OWNER_ID, SUDO_USERS, bot
 
 
-async def member_permissions(chat_id, user_id, permission):
+async def member_permissions(chat_id, user_id):
     perms = []
     try:
         member = await ubot.get_chat_member(chat_id, user_id)
     except Exception:
         return []
-    if member.permission:
-        perms.append(permission)
+    if member.can_post_messages:
+        perms.append("can_post_messages")
+    if member.can_edit_messages:
+        perms.append("can_edit_messages")
+    if member.can_delete_messages:
+        perms.append("can_delete_messages")
+    if member.can_restrict_members:
+        perms.append("can_restrict_members")
+    if member.can_promote_members:
+        perms.append("can_promote_members")
+    if member.can_change_info:
+        perms.append("can_change_info")
+    if member.can_invite_users:
+        perms.append("can_invite_users")
+    if member.can_pin_messages:
+        perms.append("can_pin_messages")
+    if member.can_manage_voice_chats:
+        perms.append("can_manage_voice_chats")
     return perms
+
 
 
 async def authorised(func, subFunc2, client, message):
@@ -65,7 +82,7 @@ def adminsonly(permission, text_permissions):
                     )
                 return await unauthorised(message, text_permissions, subFunc2)
             userID = message.from_user.id
-            permissions = await member_permissions(chatID, userID, permission)
+            permissions = await member_permissions(chatID, userID)
             if userID not in SUDO_USERS and permission not in permissions:
                 return await unauthorised(message, text_permissions, subFunc2)
             return await authorised(func, subFunc2, client, message)
