@@ -1,23 +1,42 @@
-name: Git Commit
+name: Python Auto Fix
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  commit:
+  auto_fix:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure git
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Upgrade pip
         run: |
-          git config --global user.name "XtomiX"
-          git config --global user.email "96681219+XtomiX@users.noreply.github.com"
+          python -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: |
+          pip install black isort
+
+      - name: Auto fix code
+        run: |
+          black .
+          isort -rc .
 
       - name: Commit changes
-        run: |
-          git add .
-          git commit -m "Commit message"
-          git push origin main
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'auto fixes'
+          commit_options: '--no-verify'
+          repository: .
+          commit_user_name: XtomiX
+          commit_user_email: 96681219+XtomiX@users.noreply.github.com
+          commit_author: XtomiX <96681219+XtomiX@users.noreply.github.com>
