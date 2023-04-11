@@ -1,21 +1,32 @@
-name: Auto Fix
-on: [push]
+name: Python Auto Fix
+
+on:
+  push:
+    branches: [ main ]
+
 jobs:
-  fix:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup Python
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
-    - name: Install Dependencies
+
+    - name: Install dependencies
       run: |
-        pip install black
-        pip install -r requirements.txt
-    - name: Auto Fix
-      run: python -m black .
-    - name: Commit Changes
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: 'Auto Fix with Black'
+        python -m pip install --upgrade pip
+        pip install pylint
+        pip install pyupgrade
+
+    - name: Run pylint
+      run: |
+        pylint *.py
+
+    - name: Run pyupgrade
+      run: |
+        pyupgrade --py39-plus *.py
