@@ -9,8 +9,7 @@ from pyrogram.raw.functions.phone import CreateGroupCall
 from pytgcalls import StreamType
 from pytgcalls.exceptions import GroupCallNotFound, NoActiveGroupCall
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
-from pytgcalls.types.input_stream.quality import (HighQualityAudio,
-                                                  HighQualityVideo)
+from pytgcalls.types.input_stream.quality import HighQualityAudio, HighQualityVideo
 from youtubesearchpython import VideosSearch
 
 from MusicAndVideo.config import call_py
