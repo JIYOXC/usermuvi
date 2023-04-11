@@ -1,0 +1,16 @@
+name: Auto Update
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # at midnight every day
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ahmadawais/auto-git-updated@v1.1.0
+        with:
+          commit_message: "🤖 Updated dependencies"
+          commit_author: "XtomiX <96681219+XtomiX@users.noreply.github.com>"
