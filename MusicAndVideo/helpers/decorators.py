@@ -35,7 +35,7 @@ async def authorised(func, subFunc2, client, message):
     try:
         await func(client, message)
     except ChatWriteForbidden as z:
-        await hot.send_message(chatID, z)
+        await bot.send_message(chatID, z)
     except Exception as e:
         try:
             await message.reply_text(str(e.MESSAGE))
