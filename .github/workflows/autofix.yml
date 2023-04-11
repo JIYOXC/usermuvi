@@ -1,42 +1,21 @@
-name: Python Auto Fix
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
+name: Auto Fix
+on: [push]
 jobs:
-  auto_fix:
+  fix:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Upgrade pip
-        run: |
-          python -m pip install --upgrade pip
-
-      - name: Install dependencies
-        run: |
-          pip install black isort
-
-      - name: Auto fix code
-        run: |
-          black .
-          isort -rc .
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'auto fixes'
-          commit_options: '--no-verify'
-          repository: .
-          commit_user_name: Anon907
-          commit_user_email: 123182336+Anon907@users.noreply.github.com
-          commit_author: Anon907 <96681219+Anon907@users.noreply.github.com>
+    - uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install Dependencies
+      run: |
+        pip install black
+        pip install -r requirements.txt
+    - name: Auto Fix
+      run: python -m black .
+    - name: Commit Changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: 'Auto Fix with Black'
