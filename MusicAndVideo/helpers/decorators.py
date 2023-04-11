@@ -8,7 +8,7 @@ from MusicAndVideo.config import OWNER_ID, SUDO_USERS, bot
 
 async def member_permissions(chat_id, user_id):
     perms = []
-    member = await ubot.get_chat_member(chat_id, user_id)
+    member = await bot.get_chat_member(chat_id, user_id)
     if member.can_post_messages:
         perms.append("can_post_messages")
     if member.can_edit_messages:
