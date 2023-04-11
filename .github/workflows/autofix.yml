@@ -1,0 +1,26 @@
+name: Auto-fix
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  auto-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Auto-fix code
+        run: npm run lint --fix
+      - name: Commit changes
+        run: |
+          git config --local user.email "96681219+XtomiX@users.noreply.github.com"
+          git config --local user.name "XtomiX"
+          git commit -a -m "Auto-fix code"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.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 }}
+          branch: main
