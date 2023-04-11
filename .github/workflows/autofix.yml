@@ -1,35 +1,35 @@
 name: Auto Fix
 on:
-push:
-branches:
-- main 
+  push:
+    branches:
+      - main 
 
 jobs:
-fix:
-runs-on: ubuntu-latest
-steps:
-- name: Checkout code
-uses: actions/checkout@v2
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  - name: Setup Python
-    uses: actions/setup-python@v2
-    with:
-      python-version: "3.10"
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
 
-  - name: Install Dependencies
-    run: |
-      pip install black
-      pip install -r requirements.txt
+      - name: Install Dependencies
+        run: |
+          pip install black
+          pip install -r requirements.txt
 
-  - name: Auto Fix
-    run: |
-      black .
+      - name: Auto Fix
+        run: |
+          black .
 
-  - name: Commit Changes
-    uses: EndBug/add-and-commit@v7
-    with:
-      author_name: XtomiX
-      author_email: 96681219+XtomiX@users.noreply.github.com
-      message: Auto Fix with Black
-      add: "."
-      force: true
+      - name: Commit Changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: XtomiX
+          author_email: 96681219+XtomiX@users.noreply.github.com
+          message: Auto Fix with Black
+          add: "."
+          force: true
