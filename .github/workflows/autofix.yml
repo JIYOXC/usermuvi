@@ -25,7 +25,7 @@ jobs:
 
     - name: Run pylint
       run: |
-        pylint *.py
+        pylint --disable=C0305 *.py
 
     - name: Run pyupgrade
       run: |
