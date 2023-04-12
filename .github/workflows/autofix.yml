@@ -33,4 +33,4 @@ jobs:
         git config --global user.name "XtomiX"
         git add .
         git commit -m "Auto-format Python code"
-        git push
+        git push origin HEAD:main
