@@ -3,12 +3,14 @@ import os
 
 from pytgcalls.types import StreamAudioEnded
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
-from pytgcalls.types.input_stream.quality import HighQualityAudio, HighQualityVideo
+from pytgcalls.types.input_stream.quality import (HighQualityAudio,
+                                                  HighQualityVideo)
 
 from MusicAndVideo.config import bot as app
 from MusicAndVideo.config import call_py
 from MusicAndVideo.helpers.other.generator.thumbnail import gen_thumb
-from MusicAndVideo.helpers.queues import QUEUE, clear_queue, get_queue, pop_an_item
+from MusicAndVideo.helpers.queues import (QUEUE, clear_queue, get_queue,
+                                          pop_an_item)
 
 
 async def skip_current_song(chat_id):
