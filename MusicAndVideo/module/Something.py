@@ -54,9 +54,7 @@ async def extract_userid(message, text):
     entity = entities[1 if message.text.startswith("/") else 0]
     if entity.type == "mention":
         return (await message._client.get_users(text)).id
-    if entity.type == "text_mention":
-        return entity.user.id
-    return None
+    return entity.user.id if entity.type == "text_mention" else None
 
 
 async def extract_user_and_reason(message, sender_chat=False):
@@ -364,7 +362,7 @@ async def tools(client, message):
         _sudo = f"**⚡ DAFTAR SUDO**\n\n• {A.mention}\n"
         for X in range(1, len(SUDO_USERS)):
             B = await bot.get_users(SUDO_USERS[X])
-            _sudo = _sudo + f"• {B.mention}\n"
+            _sudo = f"{_sudo}• {B.mention}\n"
         await message.reply(_sudo)
     elif message.command[0] == "tr":
         trans = Translator()
@@ -395,17 +393,18 @@ async def tools(client, message):
         await message.reply_text(reply, parse_mode="html")
     elif message.command[0] == "id":
         chat_type = message.chat.type
-        if chat_type == "private":
-            await message.reply(
-                f"[ID Anda:](tg://user?id={message.from_user.id}) <code>{message.from_user.id}</code>"
-            )
         if chat_type == "channel":
-            if message.sender_chat.username:
-                get_link = f"https://t.me/{message.sender_chat.username}"
-            else:
-                get_link = (await bot.get_chat(message.sender_chat.id)).invite_link
+            get_link = (
+                f"https://t.me/{message.sender_chat.username}"
+                if message.sender_chat.username
+                else (await bot.get_chat(message.sender_chat.id)).invite_link
+            )
             await message.reply(
                 f"[ID Anda:]({get_link}) <code>{message.sender_chat.id}</code>"
+            )
+        elif chat_type == "private":
+            await message.reply(
+                f"[ID Anda:](tg://user?id={message.from_user.id}) <code>{message.from_user.id}</code>"
             )
         if chat_type in ["group", "supergroup"]:
             if message.reply_to_message:
