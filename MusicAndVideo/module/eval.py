@@ -21,10 +21,7 @@ async def executor(client, message):
     status_message = await message.reply_text("Processing ...")
     cmd = message.text.split(" ", maxsplit=1)[1]
 
-    reply_to_ = message
-    if message.reply_to_message:
-        reply_to_ = message.reply_to_message
-
+    reply_to_ = message.reply_to_message if message.reply_to_message else message
     old_stderr = sys.stderr
     old_stdout = sys.stdout
     redirected_output = sys.stdout = StringIO()

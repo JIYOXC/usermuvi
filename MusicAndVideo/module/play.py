@@ -44,7 +44,6 @@ async def YouTube_Download(link: str):
 
 @Client.on_message(command(["play"]) & filters.group & ~filters.edited)
 async def play(client, message):
-    chat_id = message.chat.id
     if len(message.command) < 2:
         await message.reply(
             f"""
@@ -65,6 +64,7 @@ Contoh: `/play happy asmara lemah teles`**
             duration = search[2]
             request = message.from_user.mention
             hm, ytlink = await YouTube_Download(url)
+            chat_id = message.chat.id
             if hm == 0:
                 await pesan.edit(f"**YTDL ERROR ⚠️** \n\n`{ytlink}`")
                 await asyncio.sleep(2)
@@ -154,7 +154,6 @@ Contoh: `/play happy asmara lemah teles`**
 
 @Client.on_message(command(["vplay"]) & filters.group & ~filters.edited)
 async def vplay(client, message):
-    chat_id = message.chat.id
     if len(message.command) < 2:
         await message.reply(
             f"""
@@ -175,6 +174,7 @@ Contoh: `/vplay happy asmara cukup`**
             duration = search[2]
             request = message.from_user.mention
             hm, ytlink = await YouTube_Download(url)
+            chat_id = message.chat.id
             if hm == 0:
                 await pesan.edit(f"**YTDL ERROR ⚠️** \n\n`{ytlink}`")
                 await asyncio.sleep(2)
@@ -277,17 +277,14 @@ async def playlist(_, message):
                 disable_web_page_preview=True,
             )
         else:
-            QUE = f"**▶️ Sekarang Memutar: {chat_queue[0][3]}** \n**🏷️ Nama:** [{chat_queue[0][0]}](https://youtu.be/{chat_queue[0][2]})**\n**🎧 Atas Permintaan: {chat_queue[0][4]}**\n\n**⏯ Daftar Antrian:**\n"
             l = len(chat_queue)
+            QUE = f"**▶️ Sekarang Memutar: {chat_queue[0][3]}** \n**🏷️ Nama:** [{chat_queue[0][0]}](https://youtu.be/{chat_queue[0][2]})**\n**🎧 Atas Permintaan: {chat_queue[0][4]}**\n\n**⏯ Daftar Antrian:**\n"
             for x in range(1, l):
                 hmm = chat_queue[x][0]
                 hmmm = chat_queue[x][2]
                 hmmmm = chat_queue[x][3]
                 request = chat_queue[x][4]
-                QUE = (
-                    QUE
-                    + f"**#{x}: [{hmm}](https://youtu.be/{hmmm}) - ({hmmmm})\n**🎧 Atas Permintaan: {request}**\n\n"
-                )
+                QUE = f"{QUE}**#{x}: [{hmm}](https://youtu.be/{hmmm}) - ({hmmmm})\n**🎧 Atas Permintaan: {request}**\n\n"
             loli = await message.reply(QUE, disable_web_page_preview=True)
         await asyncio.sleep(15)
         await message.delete()

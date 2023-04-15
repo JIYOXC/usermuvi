@@ -79,8 +79,6 @@ async def stream_end_handler(_, u):
 • Meninggalkan obrolan suara**
 """,
             )
-            await asyncio.sleep(31)
-            await loli.delete()
         elif op == 2:
             loli = await app.send_message(
                 chat_id,
@@ -90,8 +88,6 @@ async def stream_end_handler(_, u):
 🗑️ Membersihkan antrian dan keluar dari obrolan video.**
 """,
             )
-            await asyncio.sleep(31)
-            await loli.delete()
         else:
             thumb = await gen_thumb(op[1], "NOW PLAYING")
             loli = await app.send_photo(
@@ -108,8 +104,9 @@ async def stream_end_handler(_, u):
             )
             if os.path.exists(thumb):
                 os.remove(thumb)
-            await asyncio.sleep(31)
-            await loli.delete()
+
+        await asyncio.sleep(31)
+        await loli.delete()
 
 
 @call_py.on_closed_voice_chat()

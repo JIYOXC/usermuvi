@@ -44,9 +44,9 @@ async def music_ended(_, message):
                     os.remove(thumb)
                 await message.delete()
         else:
-            skip = message.text.split(None, 1)[1]
             OP = "**🗑️ Menghapus **"
             if chat_id in QUEUE:
+                skip = message.text.split(None, 1)[1]
                 items = [int(x) for x in skip.split(" ") if x.isdigit()]
                 items.sort(reverse=True)
                 for x in items:
