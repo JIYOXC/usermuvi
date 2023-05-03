@@ -1,5 +1,8 @@
 name: Auto Fix
-on: [push]
+on:
+  push:
+    branches:
+      - main
 jobs:
   auto_fix_by_tomi_setiawan:
     runs-on: ubuntu-latest
@@ -15,11 +18,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install black isort autoflake
       - name: Auto Fix
-        run: | 
+        run: |
           black --exclude=venv .
           isort --skip-glob='**/venv/**' .
-          find . -type f -name '*.py' -exec autoflake --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports {} +
-          find . -type f -name '*.txt' -exec sed -i '/^\s*$/d' {} +
+          find . -name "*.txt" -type f -exec sh -c 'black "$0" && isort --skip-glob="**/venv/**" "$0"' {} \;
+      - name: Remove unused imports
+        run: |
+          autoflake --in-place --recursive --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports .
       - name: Code Analysis
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
