@@ -18,8 +18,8 @@ jobs:
         run: | 
           black --exclude=venv .
           isort --skip-glob='**/venv/**' .
-          find . -name 'requirements.txt' -type f -exec autoflake --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports {} +
-          autoflake --in-place --recursive --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports .
+          find . -type f -name '*.py' -exec autoflake --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports {} +
+          find . -type f -name '*.txt' -exec sed -i '/^\s*$/d' {} +
       - name: Code Analysis
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
