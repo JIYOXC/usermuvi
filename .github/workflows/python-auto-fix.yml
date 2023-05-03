@@ -18,7 +18,7 @@ jobs:
         run: | 
           black --exclude=venv .
           isort --skip-glob='**/venv/**' .
-          find . -name '*.txt' -type f -exec autoflake --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports {} + .
+          find . -name '*.txt' -type f -exec autoflake --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports {} +
           autoflake --in-place --recursive --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports .
       - name: Code Analysis
         uses: stefanzweifel/git-auto-commit-action@v4
