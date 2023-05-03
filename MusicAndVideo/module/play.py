@@ -3,7 +3,6 @@ import os
 import sys
 from random import randint
 
-from pykeyboard import InlineKeyboard
 from pyrogram import Client, filters
 from pyrogram.errors import ChatAdminRequired
 from pyrogram.raw.functions.phone import CreateGroupCall
