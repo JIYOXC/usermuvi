@@ -19,6 +19,8 @@ from MusicAndVideo.helpers.other.generator.thumbnail import gen_thumb
 from MusicAndVideo.helpers.queues import QUEUE, add_to_queue, get_queue
 
 
+
+
 def YouTube_Search(query):
     try:
         search = VideosSearch(query, limit=1).result()
