@@ -15,10 +15,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install black isort autoflake
       - name: Auto Fix
-        run: |
-          black .
-          isort .
-          autoflake .
+        run: black --exclude=venv isort --skip-glob='**/venv/**' autoflake --in-place --recursive --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports .
       - name: Code Analysis
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
