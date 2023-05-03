@@ -1,8 +1,5 @@
 name: Auto Fix
-on:
-  push:
-    branches:
-      - main # ganti dengan nama branch yang diinginkan
+on: [push]
 jobs:
   auto_fix_by_tomi_setiawan:
     runs-on: ubuntu-latest
@@ -19,13 +16,9 @@ jobs:
           pip install black isort autoflake
       - name: Auto Fix
         run: |
-          black --exclude=venv .
-          isort --skip-glob='**/venv/**' .
-          find . -type f -name '*.txt' -exec autoflake --in-place --remove-unused-variables {} +
-          find . -type f -name '*.txt' -exec black --line-length 88 {} +
-      - name: Remove unused imports
-        run: |
-          autoflake --in-place --recursive --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports .
+          black .
+          isort .
+          autoflake .
       - name: Code Analysis
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
