@@ -3,6 +3,7 @@ import os
 import sys
 from random import randint
 
+from pykeyboard import InlineKeyboard
 from pyrogram import Client, filters
 from pyrogram.errors import ChatAdminRequired
 from pyrogram.raw.functions.phone import CreateGroupCall
@@ -12,7 +13,7 @@ from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls.types.input_stream.quality import (HighQualityAudio,
                                                   HighQualityVideo)
 from youtubesearchpython import VideosSearch
-from pykeyboard import InlineKeyboard 
+
 from MusicAndVideo.config import call_py
 from MusicAndVideo.helpers.filters import command
 from MusicAndVideo.helpers.other.generator.thumbnail import gen_thumb
