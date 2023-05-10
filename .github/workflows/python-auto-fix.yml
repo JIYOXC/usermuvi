@@ -1,10 +1,7 @@
 name: Auto Fix
-on:
-  push:
-    branches:
-      - main
+on: [push]
 jobs:
-  auto_fix_by_tomi_setiawan:
+  python-auto-fix:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -17,15 +14,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install black isort autoflake
+          pip freeze > github-action.txt
       - name: Auto Fix
         run: |
+          find . -type f -name "*.py" -exec sed -i '/^[[:space:]]*$/d' {} \;
           black --exclude=venv .
           isort --skip-glob='**/venv/**' .
-          find . -name "*.txt" -type f -exec sh -c 'black "$0" && isort --skip-glob="**/venv/**" "$0"' {} \;
-      - name: Remove unused imports
-        run: |
           autoflake --in-place --recursive --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports .
       - name: Code Analysis
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Auto Fix"
+          commit_options: "--no-verify"
