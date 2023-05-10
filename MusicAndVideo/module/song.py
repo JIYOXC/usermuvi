@@ -132,7 +132,6 @@ async def progress(current, total, message, start, type_of_ps, file_name=None):
             "".join("🔘" for _ in range(10 - math.floor(percentage / 10))),
             round(percentage, 2),
         )
-
         tmp = progress_str + "{0} of {1}\nETA: {2}".format(
             humanbytes(current), humanbytes(total), time_formatter(estimated_total_time)
         )
@@ -201,7 +200,6 @@ def time_formatter(milliseconds: int) -> str:
         + (f"{str(seconds)} second(s), " if seconds else "")
         + (f"{str(milliseconds)} millisecond(s), " if milliseconds else "")
     )
-
     return tmp[:-2]
 
 
@@ -233,14 +231,12 @@ def time_to_seconds(time):
 @Client.on_message(command(["vsong", "video"]))
 async def vsong(client, message):
     urlissed = get_text(message)
-
     pablo = await client.send_message(message.chat.id, f"**🔎 Mencari** `{urlissed}`")
     if not urlissed:
         await pablo.edit(
             "Sintaks Perintah Tidak Valid, Silakan Periksa Menu Bantuan Untuk Tahu Lebih Banyak!"
         )
         return
-
     search = SearchVideos(f"{urlissed}", offset=1, mode="dict", max_results=1)
     mi = search.result()
     mio = mi["search_result"]

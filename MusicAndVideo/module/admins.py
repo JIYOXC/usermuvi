@@ -34,7 +34,6 @@ async def music_ended(_, message):
                     photo=thumb,
                     caption=f"""
 **⏭ {message.from_user.mention} Telah Manggganti {op[2]}
-
 🏷️ Nama: [{op[0]}](https://youtu.be/{op[1]})
 ⏱️ Durasi: {op[4]}
 🎧 Atas Permintaan: {op[3]}**

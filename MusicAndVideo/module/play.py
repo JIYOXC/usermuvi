@@ -92,7 +92,6 @@ Contoh: `/play happy asmara lemah teles`**
                     photo=f"{thumb}",
                     caption=f"""
 💡 **Music Ditambahkan Ke Antrian > {pos}**
-
 🏷️ **Nama:** [{songname}]({url})
 ⏱️ **Durasi:** {duration}
 🎧 **Atas Permintaan:** {request}
@@ -140,7 +139,6 @@ Contoh: `/play happy asmara lemah teles`**
                     photo=f"{thumb}",
                     caption=f"""
 ▶️ **Memutar Music**
-
 🏷️ **Nama:** [{songname}]({url})
 ⏱️ **Durasi:** {duration}
 🎧 **Atas Permintaan:** {request}
@@ -202,7 +200,6 @@ Contoh: `/vplay happy asmara cukup`**
                     photo=f"{thumb}",
                     caption=f"""
 💡 **Video Ditambahkan Ke Antrian > {pos}**
-
 🏷️ **Nama:** [{songname}]({url})
 ⏱️ **Durasi:** {duration}
 🎧 **Atas Permintaan:** {request}
@@ -250,7 +247,6 @@ Contoh: `/vplay happy asmara cukup`**
                     photo=f"{thumb}",
                     caption=f"""
 ▶️ **Memutar Video**
-
 🏷️ **Nama:** [{songname}]({url})
 ⏱️ **Durasi:** {duration}
 🎧 **Atas Permintaan:** {request}

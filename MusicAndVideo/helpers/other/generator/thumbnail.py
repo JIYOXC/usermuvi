@@ -24,7 +24,6 @@ def changeImageSize(maxWidth, maxHeight, image):
 async def gen_thumb(foto, status):
     if os.path.isfile(f"search/{foto}.png"):
         return f"search/{foto}.png"
-
     url = f"https://youtu.be/{foto}"
     try:
         results = VideosSearch(url, limit=1)
@@ -48,13 +47,11 @@ async def gen_thumb(foto, status):
                 channel = result["channel"]["name"]
             except:
                 channel = "Unknown Channel"
-
         async with aiohttp.ClientSession() as session, session.get(thumbnail) as resp:
             if resp.status == 200:
                 f = await aiofiles.open(f"search/thumb{foto}.png", mode="wb")
                 await f.write(await resp.read())
                 await f.close()
-
         youtube = Image.open(f"search/thumb{foto}.png")
         image1 = changeImageSize(1280, 720, youtube)
         image2 = image1.convert("RGBA")
@@ -112,7 +109,6 @@ async def gen_thumb(foto, status):
                     stroke_fill="white",
                     font=font,
                 )
-
         draw.text(
             (600, 450),
             f"Ditonton : {views}",

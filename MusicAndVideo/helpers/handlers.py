@@ -77,7 +77,6 @@ async def stream_end_handler(_, u):
                 chat_id,
                 """
 **✅ Antrian kosong.
-
 • Meninggalkan obrolan suara**
 """,
             )
@@ -86,7 +85,6 @@ async def stream_end_handler(_, u):
                 chat_id,
                 """
 **❌ terjadi kesalahan
-
 🗑️ Membersihkan antrian dan keluar dari obrolan video.**
 """,
             )
@@ -96,9 +94,7 @@ async def stream_end_handler(_, u):
                 chat_id,
                 photo=thumb,
                 caption=f"""
-
 **▶️ Sekarang Memutar {op[2]}
-
 🏷️ Nama: [{op[0]}](https://youtu.be/{op[1]})
 ⏱️ Durasi: {op[4]}
 🎧 Atas Permintaan: {op[3]}**
@@ -106,7 +102,6 @@ async def stream_end_handler(_, u):
             )
             if os.path.exists(thumb):
                 os.remove(thumb)
-
         await asyncio.sleep(31)
         await loli.delete()
 

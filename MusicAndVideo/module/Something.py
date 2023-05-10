@@ -94,7 +94,6 @@ async def list_admins(message: int):
         interval = time() - admins_in_chat[message.chat.id]["last_updated_at"]
         if interval < 3600:
             return admins_in_chat[message.chat.id]["data"]
-
     admins_in_chat[message.chat.id] = {
         "last_updated_at": time(),
         "data": [

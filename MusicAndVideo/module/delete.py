@@ -38,17 +38,12 @@ async def purge_me_func(client, message):
         if message.reply_to_message
         else message.text.split(None, 1)[1].strip()
     )
-
     if not n.isnumeric():
         return await eor(message, text="Argumen Tidak Valid")
-
     n = int(n)
-
     if n < 1:
         return await eor(message, text="Butuh nomor >=1-999")
-
     chat_id = message.chat.id
-
     message_ids = [
         m.message_id
         async for m in client.search_messages(
@@ -57,12 +52,9 @@ async def purge_me_func(client, message):
             limit=n,
         )
     ]
-
     if not message_ids:
         return await eor(message, text="Tidak ada pesan yang ditemukan.")
-
     to_delete = [message_ids[i : i + 999] for i in range(0, len(message_ids), 999)]
-
     for hundred_messages_or_less in to_delete:
         await client.delete_messages(
             chat_id=chat_id,
@@ -77,28 +69,22 @@ async def purge_me_func(client, message):
 @Client.on_message(filters.user(SUDO_USERS) & command(["purge"]))
 async def purgefunc(client, message):
     await message.delete()
-
     if not message.reply_to_message:
         return await message.reply_text("Reply to a message to purge from.")
-
     chat_id = message.chat.id
     message_ids = []
-
     for message_id in range(
         message.reply_to_message.message_id,
         message.message_id,
     ):
         message_ids.append(message_id)
-
         if len(message_ids) == 100:
             await client.delete_messages(
                 chat_id=chat_id,
                 message_ids=message_ids,
                 revoke=True,  # For both sides
             )
-
             message_ids = []
-
     if len(message_ids) > 0:
         await client.delete_messages(
             chat_id=chat_id,
