@@ -1,12 +1,15 @@
-name: Auto Fix Syntax
+name: Auto Fix Python Syntax
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  auto_fix_syntax:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,12 +19,12 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.x"
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
+        pip install autopep8
 
-    - name: Auto Fix Syntax
-      run: pylint --exit-zero --load-plugins pylint_quotes -r n MusicAndVideo/*.py
+    - name: Auto fix Python syntax
+      run: autopep8 --in-place --recursive .
