@@ -1,9 +1,6 @@
-name: Auto Fix Python Syntax
+name: Auto Fix Syntax
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -13,18 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install autopep8
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black isort
 
-    - name: Auto fix Python syntax
-      run: autopep8 --in-place --recursive .
+      - name: Auto Fix Syntax
+        run: |
+          black . --exclude=venv
+          isort .
+
+      - name: Commit Changes
+        run: |
+          git config --global user.name "XtomiX"
+          git config --global user.email "96681219+XtomiX@users.noreply.github.com"
+          git commit -am "Auto fix syntax" --allow-empty
