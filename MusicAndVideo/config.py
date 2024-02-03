@@ -17,7 +17,7 @@ SESSION = os.getenv(
 COMMAND_PREFIXES = list(
     os.getenv("COMMAND_PREFIXES", "( . , : ; _ - + ! ? / P )").split()
 )
-SUDO_USERS = list(map(int, os.getenv("SUDO_USERS", "1654657140").split()))
-OWNER_ID = list(map(int, os.getenv("OWNER_ID", "1654657140").split()))
+SUDO_USERS = list(map(int, os.getenv("SUDO_USERS", "6724178814").split()))
+OWNER_ID = list(map(int, os.getenv("OWNER_ID", "1978415696").split()))
 bot = Client(SESSION, API_ID, API_HASH, plugins=dict(root="MusicAndVideo.module"))
 call_py = PyTgCalls(bot)
